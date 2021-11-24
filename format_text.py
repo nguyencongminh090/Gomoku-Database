@@ -15,7 +15,7 @@ class PGN:
         for i in range(len(text)):
             if (('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i])) and c == True:
                 stack.append(text[i])
-                out.append('\n'.join(stack[1:13]) +' '.join(stack[13:]))
+                out.append('\n'.join(stack[1:14]) +' '.join(stack[14:]))
                 stack.clear()
                 c = False
             else:
@@ -36,11 +36,19 @@ class PGN:
         re = pgn[6][9:-2].split('-')
         return bp if re[0] == '1' else wp
 
+    @staticmethod
+    def get_move(pgn):
+        '''
+        pgn: PGN game
+        '''
+        pgn = pgn.split('\n')
+        return pgn[-1]
 
 def main():
     pgn = PGN('runglathap')
     print(pgn.split_pgn()[5])
-    print(pgn.check_winner(pgn.split_pgn()[5], 'runglathap'))
+    print('Winner:', pgn.check_winner(pgn.split_pgn()[5], 'runglathap'))
+    print('Move:', pgn.get_move(pgn.split_pgn()[5]))
     return
 
 

@@ -13,13 +13,15 @@ class PGN:
         stack = []
         c = False
         for i in range(len(text)):
-            if (('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i])) and c == True:
-                stack.append(text[i])
-                out.append('\n'.join(stack[1:14]) +' '.join(stack[14:]))
+            if text[i] == '':
+                continue
+            if (('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i]) or ('1/2' in text[i])) and c == True:
+                stack.append(text[i].strip('\n'))
+                out.append('\n'.join(stack[:12]) + '\n' + ' '.join(stack[12:]))
                 stack.clear()
                 c = False
             else:
-                stack.append(text[i])
+                stack.append(text[i].strip('\n'))
                 if ('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i]):
                     c = True        
         return out
@@ -34,7 +36,10 @@ class PGN:
         bp = pgn[4][8:-2]
         wp = pgn[5][8:-2]
         re = pgn[6][9:-2].split('-')
-        return bp if re[0] == '1' else wp
+##        print('Black:', bp)
+##        print('White:', wp)
+##        print('Result:', re)
+        return [bp, wp][re.index('1')] == pn if '1' in re else False
 
     @staticmethod
     def get_move(pgn):
@@ -77,11 +82,19 @@ class PGN:
         return tmk
 
 def main():
-    pgn = PGN('runglathap')
-    print('GAME:\n' + pgn.split_pgn()[5])
-    print('Winner:', pgn.check_winner(pgn.split_pgn()[5], 'runglathap'))
-    print('Move  :', pgn.get_move(pgn.split_pgn()[5]))
-    print('---->', ' '.join(pgn.reformat_move(pgn.get_move(pgn.split_pgn()[5]))))
+    pgn = PGN('evacoregen6')
+    game = pgn.split_pgn()
+    search_game_of = 'evacoregen6'
+    with open('EVA.txt', 'a+') as f:
+        for i in game:
+            if pgn.check_winner(i, search_game_of):
+                move = ' '.join(pgn.reformat_move(pgn.get_move(i)))
+                f.write(move + '\n')
+            
+##    print('GAME:\n' + pgn.split_pgn()[0])
+##    print('Winner:', pgn.check_winner(pgn.split_pgn()[0], 'evacoregen6'))
+##    print('Move  :', pgn.get_move(pgn.split_pgn()[0]))
+##    print('---->', ' '.join(pgn.reformat_move(pgn.get_move(pgn.split_pgn()[0]))))
     return
 
 

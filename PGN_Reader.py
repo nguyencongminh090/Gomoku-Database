@@ -1,3 +1,6 @@
+import codecs
+
+
 class PGN:
     def __init__(self, path):
         self.path = path
@@ -81,22 +84,19 @@ class PGN:
             tmk.remove('')
         return tmk
 
-def main():
-    pgn = PGN('evacoregen6')
+def make_db(fn, search_game_of, file_out):
+    pgn = PGN(fn)
     game = pgn.split_pgn()
-    search_game_of = 'evacoregen6'
-    with open('Output_EVA.txt', 'a+') as f:
+    s = ''
+    with open(file_out, 'wb') as f:
         for i in game:
             if pgn.check_winner(i, search_game_of):
                 move = ' '.join(pgn.reformat_move(pgn.get_move(i)))
-                f.write(move + '\n')
-            
-##    print('GAME:\n' + pgn.split_pgn()[0])
-##    print('Winner:', pgn.check_winner(pgn.split_pgn()[0], 'evacoregen6'))
-##    print('Move  :', pgn.get_move(pgn.split_pgn()[0]))
-##    print('---->', ' '.join(pgn.reformat_move(pgn.get_move(pgn.split_pgn()[0]))))
+                s += move + '\n'
+        s = codecs.encode(bytes(s.encode()), 'bz2')
+        f.write(s)
     return
 
 
 if __name__ == '__main__':
-    main()
+    make_db('evacoregen6', 'evacoregen6', 'eva.db')

@@ -1,4 +1,6 @@
 from time import perf_counter as clock
+import codecs
+import os
 
 
 class Node:
@@ -24,28 +26,54 @@ class Node:
 
     def get_move(self, lst: list):
         child = [i.node for i in self.child]
-        return self.child[child.index(lst[0])].get_move(lst[1:]) \
-            if len(lst) != 0 else child if len(child) > 1 else child[0]
+        return 'Not found' if len(lst) != 0 and lst[0] not in child else self.child[child.index(lst[0])].get_move(lst[1:]) \
+            if len(lst) != 0 else child
 
 
-with open('EVA.txt', 'r') as f:
-    data = f.read().split('\n')[:-1]
+def main():
+    while True:
+        db = input('Database name: ')
+        if not os.path.exists(db):
+            print('---File not found! Please Try Again!---'.center(70))
+            continue
+        print(f'\n{"-"*70}\nIntroduce\n- q: Quit\n- clear: Clear screen\n- c: Change database\nAuthor: Nguyen Cong Minh\n{"-"*70}\n')
+        with open(db, 'rb') as f:
+            data = codecs.decode(f.read(), 'bz2').decode().split('\n')[:-1]
+            
+        tree = Node()
+        for i in range(len(data)):
+            tree.add(data[i].split(' '))
 
-tree = Node()
-for i in range(len(data)):
-    tree.add(data[i].split(' '))
+        while True:
+            inp = input('Input: ').split(' ')
+            
+            while '' in inp:
+                inp.remove('')
+                
+            if ''.join(inp).upper() == 'Q':
+                exit()
+            elif ''.join(inp).upper() == 'C':
+                os.system('cls')
+                break
+            elif ''.join(inp).upper() == 'CLEAR':
+                os.system('cls')
+                
+            a = clock()
+            move = tree.get_move(inp)
+            b = clock()
+            
+            print(f'Search <{" ".join(inp)}> in database')
+            print('--*-> Variants:')
+            if move != 'Not found':
+                for i in move:
+                    print(f'[+] {i}')
+                print(f'\n{"~"*30}\nRuntime: %.9f sec\n{"~"*30}\n' % (b-a))
+            else:
+                print('--x->', move)
+            
+            
+    return
 
-while True:
-    inp = input('Search: ').split(' ')
-    while '' in inp:
-        inp.remove('')
-    try:
-        a = clock()
-        move = tree.get_move(inp)
-        b = clock()
-        print('Variants:', move)
-        print('Runtime: %.9f' % (b-a))
-    except:
-        print('Not found')
-    if ''.join(inp).upper() == 'Q':
-        break
+
+if __name__ == '__main__':
+    main()

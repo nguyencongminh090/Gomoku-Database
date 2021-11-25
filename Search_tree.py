@@ -2,6 +2,9 @@ class Node:
     def __init__(self, node=None):
         self.child = []
         self.node = node
+        self.depth = ''
+        self.val = ''
+        self.note = ''
 
     def add(self, lst: list):
         child = [i.node for i in self.child]
@@ -21,8 +24,38 @@ class Node:
 
     def get_move(self, lst: list):
         child = [i.node for i in self.child]
-        return self.child[child.index(lst[0])].get_move(lst[1:]) \
+        return 'Not found' if len(lst) != 0 and lst[0] not in child else self.child[child.index(lst[0])].get_move(lst[1:]) \
             if len(lst) != 0 else child if len(child) > 1 else child[0]
+
+    def set_depth(self, lst: list, depth):
+        child = [i.node for i in self.child]
+        if len(lst) != 0 and lst[0] not in child:
+            return 'Not found'
+        elif len(lst) != 0 and lst[0] in child:
+            return self.child[child.index(lst[0])].set_depth(lst[1:])
+        elif len(lst) == 0:
+            self.depth = str(depth)
+        return
+
+    def set_val(self, lst: list, val):
+        child = [i.node for i in self.child]
+        if len(lst) != 0 and lst[0] not in child:
+            return 'Not found'
+        elif len(lst) != 0 and lst[0] in child:
+            return self.child[child.index(lst[0])].set_val(lst[1:])
+        elif len(lst) == 0:
+            self.val = str(val)
+        return
+
+    def set_note(self, lst: list, note):
+        child = [i.node for i in self.child]
+        if len(lst) != 0 and lst[0] not in child:
+            return 'Not found'
+        elif len(lst) != 0 and lst[0] in child:
+            return self.child[child.index(lst[0])].set_note(lst[1:])
+        elif len(lst) == 0:
+            self.val = str(note)
+        return
 
 
 tree = Node()
@@ -34,3 +67,4 @@ tree.add(['k5', 'c1', 'l4'])
 
 print(tree.get_move(['h3', 'e8']))
 print(tree.get_move(['k5']))
+print(tree.get_move(['a5']))

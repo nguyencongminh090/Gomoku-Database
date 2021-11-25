@@ -85,7 +85,7 @@ def main():
     pgn = PGN('evacoregen6')
     game = pgn.split_pgn()
     search_game_of = 'evacoregen6'
-    with open('EVA.txt', 'a+') as f:
+    with open('Output_EVA.txt', 'a+') as f:
         for i in game:
             if pgn.check_winner(i, search_game_of):
                 move = ' '.join(pgn.reformat_move(pgn.get_move(i)))

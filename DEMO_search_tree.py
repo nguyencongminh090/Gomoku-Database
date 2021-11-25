@@ -57,6 +57,7 @@ def main():
                 break
             elif ''.join(inp).upper() == 'CLEAR':
                 os.system('cls')
+                continue
                 
             a = clock()
             move = tree.get_move(inp)

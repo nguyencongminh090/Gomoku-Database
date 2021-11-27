@@ -68,6 +68,15 @@ class Node:
             self.val = str(note)
         return
 
+    def total_nodes(self):
+        if self.root:
+            n = 0
+        else:
+            n = 1 
+        for child in self.child:
+            n += child.total_nodes()
+        return n
+    
     def click_on_screen(self, lag=0.0):
         control = Control(lag)
         if self.root:
@@ -128,6 +137,8 @@ def main():
               f'- clear: Clear screen\n'
               f'- c: Change database\n'
               f'- export: Copy to Renlib\n'
+              f'- total_node: Count total nodes in tree\n'
+              f'- Help: Display help'
               f'Author: Nguyen Cong Minh\n{"-"*70}\n')
         with open(db, 'rb') as f:
             data = codecs.decode(f.read(), 'bz2').decode().split('\n')[:-1]
@@ -151,12 +162,23 @@ def main():
                 os.system('cls')
                 continue
             elif ''.join(inp).upper() == 'EXPORT':
-                if not os.path.exists('config.txt'):
-                    print('Not exist')
-                    recognize_board.recognize()
+                recognize_board.recognize()
+                print('NOTE:', "to let the program work probably, the time's lag should be 0.03 seconds")
                 inp_lag = float(input('Lag (s): '))
-                print('Receive:', inp_lag)
                 tree.click_on_screen(inp_lag)
+                continue
+            elif ''.join(inp).upper() == 'TOTAL_NODE':                
+                print(f'{tree.total_nodes()} nodes in tree')
+                continue
+            elif ''.join(inp).upper() == 'HELP':
+                print(f'\n{"-"*70}\nHelp\n'
+                      f'- q: Quit\n'
+                      f'- clear: Clear screen\n'
+                      f'- c: Change database\n'
+                      f'- export: Copy to Renlib\n'
+                      f'- total_node: Count total nodes in tree\n'
+                      f'- Help: Display help')
+                os.system('cls')
                 continue
             
             a = clock()

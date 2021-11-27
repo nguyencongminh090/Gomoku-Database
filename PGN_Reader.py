@@ -39,10 +39,13 @@ class PGN:
         bp = pgn[4][8:-2]
         wp = pgn[5][8:-2]
         re = pgn[6][9:-2].split('-')
-##        print('Black:', bp)
-##        print('White:', wp)
-##        print('Result:', re)
-        return [bp, wp][re.index('1')] == pn if '1' in re else False
+        # Black win
+        if re[0] == '1':
+            return 'b'
+        elif re[1] == '1':
+            return 'w'
+        else: return 'n'
+##        return [bp, wp][re.index('1')] == pn if '1' in re else False
 
     @staticmethod
     def get_move(pgn):
@@ -88,9 +91,18 @@ def make_db(fn, search_game_of, file_out):
     pgn = PGN(fn)
     game = pgn.split_pgn()
     s = ''
-    with open(file_out, 'wb') as f:
+    with open(file_out[:-3] + '_Black' + file_out[-3:], 'wb') as f:
         for i in game:
-            if pgn.check_winner(i, search_game_of):
+            if pgn.check_winner(i, search_game_of) == 'b':
+                move = ' '.join(pgn.reformat_move(pgn.get_move(i)))
+                s += move + '\n'
+        s = codecs.encode(bytes(s.encode()), 'bz2')
+        f.write(s)
+
+    s = ''
+    with open(file_out[:-3] + '_White' + file_out[-3:], 'wb') as f:
+        for i in game:
+            if pgn.check_winner(i, search_game_of) == 'w':
                 move = ' '.join(pgn.reformat_move(pgn.get_move(i)))
                 s += move + '\n'
         s = codecs.encode(bytes(s.encode()), 'bz2')

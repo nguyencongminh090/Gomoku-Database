@@ -99,4 +99,4 @@ def make_db(fn, search_game_of, file_out):
 
 
 if __name__ == '__main__':
-    make_db('evacoregen6', 'evacoregen6', 'eva.db')
+    make_db('runglathap', 'runglathap', 'runglathap.db')

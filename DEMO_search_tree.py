@@ -27,7 +27,16 @@ class Node:
     def get_move(self, lst: list):
         child = [i.node for i in self.child]
         return 'Not found' if len(lst) != 0 and lst[0] not in child else self.child[child.index(lst[0])].get_move(lst[1:]) \
-            if len(lst) != 0 else child
+            if len(lst) != 0 else child if len(child) > 1 else child[0]
+
+    def __str__(self, level=-1):
+        ret = "    "*level+str(self.node)+"\n"
+        for child in self.child:
+            ret += child.__str__(level+1)
+        return ret
+
+    def __repr__(self):
+        return '<tree node>'
 
 
 def main():
@@ -36,7 +45,7 @@ def main():
         if not os.path.exists(db):
             print('---File not found! Please Try Again!---'.center(70))
             continue
-        print(f'\n{"-"*70}\nIntroduce\n- q: Quit\n- clear: Clear screen\n- c: Change database\nAuthor: Nguyen Cong Minh\n{"-"*70}\n')
+        print(f'\n{"-"*70}\nIntroduce\n- q: Quit\n- clear: Clear screen\n- c: Change database\n- export: Export tree\nAuthor: Nguyen Cong Minh\n{"-"*70}\n')
         with open(db, 'rb') as f:
             data = codecs.decode(f.read(), 'bz2').decode().split('\n')[:-1]
             
@@ -58,7 +67,11 @@ def main():
             elif ''.join(inp).upper() == 'CLEAR':
                 os.system('cls')
                 continue
-                
+            elif ''.join(inp).upper() == 'EXPORT':
+                with open('Tree_' + db[:-2] + '.txt', 'a+') as f:
+                    f.write(str(tree))
+                continue
+            
             a = clock()
             move = tree.get_move(inp)
             b = clock()

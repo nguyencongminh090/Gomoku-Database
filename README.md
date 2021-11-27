@@ -15,5 +15,6 @@ Step 2: Systematize the moves -> Make it under a database (Use Tree Data Structu
 
 Step 3: Make a bot to auto click on Renlib board.
 
+### DEMO
 
-
+Video: https://youtu.be/SayV3LgRLrc

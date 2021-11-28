@@ -1,11 +1,8 @@
 # Gomoku-Database
 
-### File
+### Main File
 
-- DEMO_SEARCH_TREE
-- search_tree.py : SEARCH_TREE algorithm
-- search_list.py : SEARCH_LIST algorithm
-
+- Gomo_DB.py
 ### What for?
 - Copy move from PGN text format to Renlib to easily look.
 ### How to?

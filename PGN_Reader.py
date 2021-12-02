@@ -25,7 +25,7 @@ class PGN:
                 c = False
             else:
                 stack.append(text[i].strip('\n'))
-                if ('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i]):
+                if ('0-1' in text[i]) or ('1-1' in text[i]) or ('1-0' in text[i]) or ('1/2' in text[i]):
                     c = True        
         return out
 

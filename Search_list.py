@@ -20,10 +20,11 @@ def search(inp, db):
 
 
 def main():
-    f = open('EVA.txt', 'r')
+    f = open('evacoregen6.txt', 'r')
     db = f.read().split('\n')
     f.close()
     db = [i.split(' ') for i in db]
+    print(db)
     while True:
         move = []
         inp = input('--> Input move: ')

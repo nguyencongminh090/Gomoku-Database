@@ -178,7 +178,6 @@ def main():
                       f'- export: Copy to Renlib\n'
                       f'- total_node: Count total nodes in tree\n'
                       f'- Help: Display help')
-                os.system('cls')
                 continue
             
             a = clock()
